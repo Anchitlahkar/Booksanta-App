@@ -1,9 +1,9 @@
-import * as React from "react";
-import { Text, View, StyleSheet, Image } from "react-native";
 import CustomSideBarMenu from "./CustomSideBarMenu";
 import { TabNavigator } from "./tabNavigator";
 import { createDrawerNavigator } from "react-navigation-drawer";
 import SettingScreen from '../screens/SettingScreen'
+import MyDonationScreen from '../screens/MyDonationScreen'
+import NotificationScreen from '../screens/NotificationScreen'
 
 export const AppDrawerNavigator = createDrawerNavigator(
   {
@@ -12,7 +12,13 @@ export const AppDrawerNavigator = createDrawerNavigator(
     },
     Settings: {
       screen: SettingScreen
-    }
+    },
+    MyDonations: {
+      screen: MyDonationScreen
+    },
+    Notifications: {
+      screen: NotificationScreen
+    },
   },
   {
     contentComponent: CustomSideBarMenu,

@@ -4,7 +4,7 @@ import DonateBookScreen from '../screens/DonateBooks'
 import ReceiverDetailsScreen from '../screens/ReceiverDetailsScreen'
 
 export const AppStackNavigator = createStackNavigator({
-    DonateBooks: {
+    Donate_Book: {
         screen: DonateBookScreen,
         navigationOptions: {headerShown: false}
     },
@@ -14,6 +14,6 @@ export const AppStackNavigator = createStackNavigator({
     }
 },
 {
-    initialRouteName: 'DonateBooks'
+    initialRouteName: 'Donate_Book'
 }
 );

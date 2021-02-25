@@ -38,7 +38,7 @@ export default class DonateBookScreen extends React.Component {
   render() {
     return (
       <View>
-        <MyHeader title="Donate Book" />
+        <MyHeader title="Donate Book" navigation={this.props.navigation}/>
 
         <FlatList
           keyExtractor={(item, index) => index.toString()}

@@ -27,6 +27,7 @@ export default class ReceiverDetailsScreen extends React.Component {
       receiverContact: "",
       receiverAddress: "",
       receiverRequestDocId: "",
+      userName: "",
     };
   }
 
@@ -71,8 +72,37 @@ export default class ReceiverDetailsScreen extends React.Component {
     });
   };
 
+  getUserDetails = (userId) => {
+    db.collection("Users")
+      .where("email", "==", userId)
+      .get()
+      .then((snapshot) => {
+        snapshot.forEach((doc) => {
+          this.setState({
+            userName: doc.data().name,
+          });
+        });
+      });
+  };
+
+  addNotifications = () => {
+    var message =
+      this.state.userName + " " + "has shown intrested in donating the book";
+
+    db.collection("Notifications").add({
+      TargetedUserID: this.state.receiverId,
+      DonorId: this.state.userId,
+      RequestId: this.state.requestId,
+      BookName: this.state.bookName,
+      Date: firebase.firestore.FieldValue.serverTimestamp(),
+      NotificationStatues: "unread",
+      Message: message,
+    });
+  };
+
   componentDidMount = () => {
     this.getReceiverDetails();
+    this.getUserDetails(this.state.userId);
   };
 
   render() {
@@ -117,6 +147,8 @@ export default class ReceiverDetailsScreen extends React.Component {
               style={styles.button}
               onPress={() => {
                 this.updateBookStatus();
+                this.addNotifications();
+                this.props.navigation.navigate("MyDonations");
               }}
             >
               <Text>I Want To Donate </Text>

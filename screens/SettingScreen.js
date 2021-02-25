@@ -71,7 +71,7 @@ export default class SettingScreen extends React.Component {
   render() {
     return (
       <View>
-        <MyHeader title="Settings" />
+        <MyHeader title="Settings" navigation={this.props.navigation}/>
         <KeyboardAvoidingView style={styles.KeyboardAvoidingView}>
           <Text
             style={{
