@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   FlatList,
 } from 'react-native';
-import { MyHeader } from '../components/MyHeader';
+import  MyHeader  from '../components/MyHeader';
 import db from '../config';
 import firebase from 'firebase';
 import { ListItem } from 'react-native-elements';

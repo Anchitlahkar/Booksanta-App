@@ -6,11 +6,12 @@ import DonatetBookScreen from '../screens/DonateBooks';
 import LoginScreen from '../screens/WelcomeScreen'
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
+import { AppStackNavigator } from './AppStackNavigator';
 
 export const TabNavigator = createBottomTabNavigator(
   {
     Donate_Book: {
-      screen: DonatetBookScreen,
+      screen: AppStackNavigator,
     },
     Request_Book: {
       screen: RequestBookScreen,

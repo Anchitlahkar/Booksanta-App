@@ -9,7 +9,7 @@ import {
   KeyboardAvoidingView,
   FlatList,
 } from "react-native";
-import { Card } from "react-native-elements";
+import { Card, Header, Icon } from "react-native-elements";
 import db from "../config";
 import firebase from "firebase";
 
@@ -108,6 +108,22 @@ export default class ReceiverDetailsScreen extends React.Component {
   render() {
     return (
       <View>
+        <Header
+          leftComponent={
+            <Icon
+              name="arrow-left"
+              type="feather"
+              color="black"
+              onPress={() => {
+                this.props.navigation.goBack();
+              }}
+            />
+          }
+          centerComponent={{
+            text: "Receiver Details",
+            style: { color: "white", fontSize: 25, fontWeight: "bold" },
+          }}
+        />
         <View>
           <Card title={"Book Information"} titleStyle={{ fontSize: 20 }}>
             <Card>

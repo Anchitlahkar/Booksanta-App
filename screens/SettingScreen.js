@@ -5,11 +5,9 @@ import {
   StyleSheet,
   TextInput,
   TouchableOpacity,
-  Image,
   KeyboardAvoidingView,
-  FlatList,
 } from "react-native";
-import { MyHeader } from "../components/MyHeader";
+import MyHeader from "../components/MyHeader";
 import db from "../config";
 import firebase from "firebase";
 
@@ -66,12 +64,12 @@ export default class SettingScreen extends React.Component {
         address: this.state.address,
       });
 
-    alert('User Details Updated SuccessFully')
+    alert("User Details Updated SuccessFully");
   };
   render() {
     return (
       <View>
-        <MyHeader title="Settings" navigation={this.props.navigation}/>
+        <MyHeader title="Settings" navigation={this.props.navigation} />
         <KeyboardAvoidingView style={styles.KeyboardAvoidingView}>
           <Text
             style={{
