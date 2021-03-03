@@ -1,27 +1,51 @@
 import * as React from "react";
-import { Text, View, StyleSheet, Dimensions, FlatList } from "react-native";
-import MyHeader from "../components/MyHeader";
+import {
+  Text,
+  View,
+  StyleSheet,
+  Dimensions,
+  FlatList,
+  Animated,
+} from "react-native";
 import db from "../config";
-import firebase from "firebase";
-import { ListItem } from "react-native-elements";
+import { ListItem, Icon } from "react-native-elements";
 import { SwipeListView } from "react-native-swipe-list-view";
 
 export default class SwipeAbleFlatList extends React.Component {
   constructor(props) {
     super(props);
 
+    this.notifications = this.props.allNotifications;
+
     this.state = {
       allNotifications: this.props.allNotifications,
     };
   }
+
+  updateMarkAsread = (notification) => {
+    db.collection("Notifications").doc(notification.doc_id).update({
+      NotificationStatues: "read",
+    });
+  };
+
+  onSwipeValueChange = (swipeData) => {
+    var allNotifications = this.props.allNotifications;
+    const { key, value } = swipeData;
+    if (value < -Dimensions.get("window").width) {
+      const newData = [...allNotifications];
+      this.updateMarkAsread(allNotifications[key]);
+      newData.splice(key, 1);
+      this.setState({ allNotifications: newData });
+    }
+  };
   renderItem = (data) => (
     <Animated.View>
       <ListItem bottomDivider>
         <ListItem.Content>
           <ListItem.Title style={{ color: "black", fontWeight: "bold" }}>
-            {data.item.book_name}
+            {data.item.BookName}
           </ListItem.Title>
-          <ListItem.Subtitle>{data.item.message}</ListItem.Subtitle>
+          <ListItem.Subtitle>{data.item.Message}</ListItem.Subtitle>
 
           <Icon name="book" type="font-awesome" color="#696969" />
         </ListItem.Content>
@@ -38,14 +62,19 @@ export default class SwipeAbleFlatList extends React.Component {
   );
 
   render() {
+    console.log(this.props.allNotifications);
+    console.log("State" + this.state.allNotifications);
     return (
       <View style={styles.container}>
         <SwipeListView
           disableRightSwipe
-          data={this.state.allNotifications}
+          data={this.props.allNotifications}
           renderItem={this.renderItem}
           renderHiddenItem={this.renderHiddenItem}
           rightOpenValue={-Dimensions.get("window").width}
+          previewRowKey={"0"}
+          previewOpenValue={-40}
+          previewOpenDelay={3000}
           onSwipeValueChange={this.onSwipeValueChange}
           keyExtractor={(item, index) => index.toString()}
         />

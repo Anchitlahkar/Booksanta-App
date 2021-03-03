@@ -8,6 +8,7 @@ import  MyHeader  from "../components/MyHeader";
 import db from "../config";
 import firebase from "firebase";
 import { ListItem } from "react-native-elements";
+import SwipeAbleFlatList from "../components/SwipeAbleFlatList"
 
 export default class NotificationScreen extends React.Component {
   constructor() {
@@ -47,21 +48,8 @@ export default class NotificationScreen extends React.Component {
           <MyHeader title="Notification" navigation={this.props.navigation}/>
         </View>
         <View>
-          <FlatList
-            keyExtractor={(item, index) => index.toString()}
-            data={this.state.allNotifications}
-            renderItem={({ item, i }) => {
-              return (
-                <ListItem
-                  key={i}
-                  title={item.BookName}
-                  subtitle={item.Message}
-                  titleStyle={{ color: "black", fontWeight: "bold" }}
-                  bottomDivider
-                />
-              );
-            }}
-          />
+        <SwipeAbleFlatList allNotifications={this.state.allNotifications} />
+        
         </View>
       </View>
     );
