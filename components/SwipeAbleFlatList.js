@@ -31,6 +31,7 @@ export default class SwipeAbleFlatList extends React.Component {
   onSwipeValueChange = (swipeData) => {
     var allNotifications = this.props.allNotifications;
     const { key, value } = swipeData;
+    console.log(value)
     if (value < -Dimensions.get("window").width) {
       const newData = [...allNotifications];
       this.updateMarkAsread(allNotifications[key]);
@@ -46,7 +47,6 @@ export default class SwipeAbleFlatList extends React.Component {
             {data.item.BookName}
           </ListItem.Title>
           <ListItem.Subtitle>{data.item.Message}</ListItem.Subtitle>
-
           <Icon name="book" type="font-awesome" color="#696969" />
         </ListItem.Content>
       </ListItem>

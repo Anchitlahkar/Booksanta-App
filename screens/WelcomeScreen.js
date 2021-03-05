@@ -1,4 +1,4 @@
-import * as React from 'react';
+import * as React from "react";
 import {
   Text,
   View,
@@ -9,33 +9,33 @@ import {
   Modal,
   KeyboardAvoidingView,
   Alert,
-} from 'react-native';
-import firebase from 'firebase';
-import { ScrollView } from 'react-native-gesture-handler';
-import db from '../config';
+} from "react-native";
+import firebase from "firebase";
+import { ScrollView } from "react-native-gesture-handler";
+import db from "../config";
 
 export default class WelcomeScreen extends React.Component {
   constructor() {
     super();
     this.state = {
-      email: '',
-      password: '',
-      firstName: '',
-      lastName: '',
-      address: '',
-      contact: '',
-      confirmPassword: '',
+      email: "",
+      password: "",
+      firstName: "",
+      lastName: "",
+      address: "",
+      contact: "",
+      confirmPassword: "",
       isModalVisible: false,
     };
   }
 
   userLogin = (email, password) => {
-    console.log('Login:  ' + email + ' : ' + password);
+    console.log("Login:  " + email + " : " + password);
     firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
       .then(() => {
-        this.props.navigation.navigate('Donate_Book')
+        this.props.navigation.navigate("Donate_Book");
       })
       .catch(function (error) {
         console.log(error);
@@ -45,24 +45,25 @@ export default class WelcomeScreen extends React.Component {
   };
 
   userSignUp = (email, password, confirmPassword) => {
-    console.log('SignUp:  ' + email + ' : ' + password);
+    console.log("SignUp:  " + email + " : " + password);
 
     if (password !== confirmPassword) {
-      return alert('Check Your Password');
+      return alert("Check Your Password");
     } else {
       firebase
         .auth()
         .createUserWithEmailAndPassword(email, password)
         .then(() => {
-          db.collection('Users').add({
-            name: this.state.firstName + ' '+ this.state.lastName,
+          db.collection("Users").add({
+            name: this.state.firstName + " " + this.state.lastName,
             contact: this.state.contact,
             address: this.state.address,
             email: this.state.email,
+            isBookRequestActive: false,
           });
-          return Alert.alert('User Add Successfully', '', [
+          return Alert.alert("User Add Successfully", "", [
             {
-              text: 'OK',
+              text: "OK",
               onPress: () => this.setState({ isModalVisible: false }),
             },
           ]);
@@ -80,14 +81,15 @@ export default class WelcomeScreen extends React.Component {
       <Modal
         animationType="fade"
         transparent={true}
-        visible={this.state.isModalVisible}>
+        visible={this.state.isModalVisible}
+      >
         <View style={styles.modalContainer}>
-          <ScrollView style={{ width: '100%' }}>
+          <ScrollView style={{ width: "100%" }}>
             <KeyboardAvoidingView style={styles.KeyboardAvoidingView}>
               <Text style={styles.modalTitle}>Registration</Text>
               <TextInput
                 style={styles.formTextInput}
-                placeholder={'First Name'}
+                placeholder={"First Name"}
                 maxLength={8}
                 onChangeText={(text) => {
                   this.setState({
@@ -97,7 +99,7 @@ export default class WelcomeScreen extends React.Component {
               />
               <TextInput
                 style={styles.formTextInput}
-                placeholder={'Last Name'}
+                placeholder={"Last Name"}
                 maxLength={8}
                 onChangeText={(text) => {
                   this.setState({
@@ -107,9 +109,9 @@ export default class WelcomeScreen extends React.Component {
               />
               <TextInput
                 style={styles.formTextInput}
-                placeholder={'Contact'}
+                placeholder={"Contact"}
                 maxLength={10}
-                keyboardType={'numeric'}
+                keyboardType={"numeric"}
                 onChangeText={(text) => {
                   this.setState({
                     contact: text,
@@ -118,7 +120,7 @@ export default class WelcomeScreen extends React.Component {
               />
               <TextInput
                 style={styles.formTextInput}
-                placeholder={'Address'}
+                placeholder={"Address"}
                 multiline={true}
                 onChangeText={(text) => {
                   this.setState({
@@ -128,8 +130,8 @@ export default class WelcomeScreen extends React.Component {
               />
               <TextInput
                 style={styles.formTextInput}
-                placeholder={'Email'}
-                keyboardType={'email-address'}
+                placeholder={"Email"}
+                keyboardType={"email-address"}
                 onChangeText={(text) => {
                   this.setState({
                     email: text,
@@ -138,7 +140,7 @@ export default class WelcomeScreen extends React.Component {
               />
               <TextInput
                 style={styles.formTextInput}
-                placeholder={'Password'}
+                placeholder={"Password"}
                 secureTextEntry={true}
                 onChangeText={(text) => {
                   this.setState({
@@ -148,7 +150,7 @@ export default class WelcomeScreen extends React.Component {
               />
               <TextInput
                 style={styles.formTextInput}
-                placeholder={'Confrim Password'}
+                placeholder={"Confrim Password"}
                 secureTextEntry={true}
                 onChangeText={(text) => {
                   this.setState({
@@ -165,7 +167,8 @@ export default class WelcomeScreen extends React.Component {
                       this.state.password,
                       this.state.confirmPassword
                     )
-                  }>
+                  }
+                >
                   <Text style={styles.registerButtonText}>Register</Text>
                 </TouchableOpacity>
               </View>
@@ -173,8 +176,9 @@ export default class WelcomeScreen extends React.Component {
               <View>
                 <TouchableOpacity
                   style={styles.cancelButton}
-                  onPress={() => this.setState({ isModalVisible: false })}>
-                  <Text style={{ color: '#ff5722' }}>Cancel</Text>
+                  onPress={() => this.setState({ isModalVisible: false })}
+                >
+                  <Text style={{ color: "#ff5722" }}>Cancel</Text>
                 </TouchableOpacity>
               </View>
             </KeyboardAvoidingView>
@@ -193,12 +197,12 @@ export default class WelcomeScreen extends React.Component {
 
         <Image
           style={styles.logo}
-          source={require('../assets/BookSanta.jpg')}
+          source={require("../assets/BookSanta.jpg")}
         />
         {this.showModal()}
 
         <TextInput
-          style={[styles.textInputStyle, { marginTop: '10%' }]}
+          style={[styles.textInputStyle, { marginTop: "10%" }]}
           placeholder="    Email ID"
           keyboardType="email-address"
           onChangeText={(text) => {
@@ -222,7 +226,8 @@ export default class WelcomeScreen extends React.Component {
           style={styles.ButtonStyle}
           onPress={() => {
             this.userLogin(this.state.email, this.state.password);
-          }}>
+          }}
+        >
           <Text style={styles.ButtonText}>Login</Text>
         </TouchableOpacity>
 
@@ -233,7 +238,8 @@ export default class WelcomeScreen extends React.Component {
             this.setState({
               isModalVisible: true,
             });
-          }}>
+          }}
+        >
           <Text style={styles.ButtonText}>Sign Up</Text>
         </TouchableOpacity>
       </View>
@@ -243,31 +249,31 @@ export default class WelcomeScreen extends React.Component {
 
 const styles = StyleSheet.create({
   mainView: {
-    height: '100%',
-    alignItems: 'center',
-    width: '100%',
+    height: "100%",
+    alignItems: "center",
+    width: "100%",
   },
   textInputStyle: {
     margin: 10,
     borderRadius: 15,
     height: 35,
-    width: '80%',
+    width: "80%",
     borderBottomWidth: 5,
-    backgroundColor: 'lightgrey',
+    backgroundColor: "lightgrey",
   },
   textContainer: {
-    backgroundColor: '#464840',
-    width: '100%',
+    backgroundColor: "#464840",
+    width: "100%",
   },
   text: {
-    color: 'white',
+    color: "white",
     padding: 20,
     fontSize: 22,
-    fontWeight: 'bold',
-    textAlign: 'center',
+    fontWeight: "bold",
+    textAlign: "center",
   },
   ButtonStyle: {
-    backgroundColor: 'blue',
+    backgroundColor: "blue",
     padding: 10,
     borderRadius: 10,
     margin: 10,
@@ -277,15 +283,15 @@ const styles = StyleSheet.create({
   },
   ButtonText: {
     fontSize: 15,
-    textAlign: 'center',
-    fontWeight: 'bold',
+    textAlign: "center",
+    fontWeight: "bold",
   },
   modalContainer: {
     flex: 1,
     borderRadius: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#ffff',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#ffff",
     marginRight: 30,
     marginLeft: 30,
     marginTop: 80,
@@ -293,22 +299,22 @@ const styles = StyleSheet.create({
   },
   KeyboardAvoidingView: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   modalTitle: {
-    justifyContent: 'center',
-    alignSelf: 'center',
+    justifyContent: "center",
+    alignSelf: "center",
     fontSize: 30,
-    color: 'brown',
+    color: "brown",
     margin: 50,
   },
 
   formTextInput: {
-    width: '75%',
+    width: "75%",
     height: 35,
-    alignSelf: 'center',
-    borderColor: '#ffab91',
+    alignSelf: "center",
+    borderColor: "#ffab91",
     borderRadius: 10,
     borderWidth: 1,
     marginTop: 20,
@@ -317,22 +323,22 @@ const styles = StyleSheet.create({
   registerButton: {
     width: 200,
     height: 40,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     borderWidth: 1,
     borderRadius: 10,
     marginTop: 30,
   },
   registerButtonText: {
-    color: '#ff5722',
+    color: "#ff5722",
     fontSize: 15,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   cancelButton: {
     width: 200,
     height: 40,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     borderWidth: 1,
     borderRadius: 10,
     marginTop: 5,
