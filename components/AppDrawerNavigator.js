@@ -1,9 +1,10 @@
 import CustomSideBarMenu from "./CustomSideBarMenu";
 import { TabNavigator } from "./tabNavigator";
 import { createDrawerNavigator } from "react-navigation-drawer";
-import SettingScreen from '../screens/SettingScreen'
-import MyDonationScreen from '../screens/MyDonationScreen'
-import NotificationScreen from '../screens/NotificationScreen'
+import SettingScreen from "../screens/SettingScreen";
+import MyDonationScreen from "../screens/MyDonationScreen";
+import NotificationScreen from "../screens/NotificationScreen";
+import MyRecivedBookScreen from "../screens/MyRecivedBookScreen";
 
 export const AppDrawerNavigator = createDrawerNavigator(
   {
@@ -11,13 +12,16 @@ export const AppDrawerNavigator = createDrawerNavigator(
       screen: TabNavigator,
     },
     Settings: {
-      screen: SettingScreen
+      screen: SettingScreen,
     },
     MyDonations: {
-      screen: MyDonationScreen
+      screen: MyDonationScreen,
     },
     Notifications: {
-      screen: NotificationScreen
+      screen: NotificationScreen,
+    },
+    MyRecivedBooks: {
+      screen: MyRecivedBookScreen,
     },
   },
   {

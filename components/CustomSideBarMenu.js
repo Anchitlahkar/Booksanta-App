@@ -2,21 +2,78 @@ import * as React from "react";
 import { Text, View, StyleSheet, Image } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { DrawerItems } from "react-navigation-drawer";
-import firebase from 'firebase'
+import firebase from "firebase";
+import { Avatar } from "react-native-elements";
+import db from "../config";
+import * as ImagePicker from "expo-image-picker";
 
 export default class CustomSideBarMenu extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      image: "#",
+      name: "",
+      userId: firebase.auth().currentUser.email,
+    };
+  }
+
+  getUserProfile = () => {
+    db.collection("Users")
+      .where("email", "==", this.state.userId)
+      .onSnapshot((snapshot) => {
+        snapshot.forEach((doc) => {
+          this.setState({
+            name: doc.data().name,
+          });
+        });
+      });
+  };
+
+  componentDidMount() {
+    this.getUserProfile();
+  }
   render() {
     return (
       <View style={styles.container}>
+        <View
+          style={{ flex: 0.5, alignItems: "center", backgroundColor: "blue" }}
+        >
+          <Avatar
+            rounded
+            source={{
+              uri: this.state.image,
+            }}
+            size="medium"
+            onPress={() => {
+              this.selectPicture();
+            }}
+            containerStyle={styles.imageContainer}
+            showEditButton
+          />
+          <Text
+            style={{
+              fontWeight: "bold",
+              fontSize: 20,
+              paddingTop: 10,
+              color: "white",
+              paddingLeft:25
+            }}
+          >
+            {this.state.name}
+          </Text>
+        </View>
         <View style={styles.drawerItemsContainer}>
           <DrawerItems {...this.props} />
         </View>
         <View styles={styles.logOutContainer}>
-          <TouchableOpacity style={styles.logOutButton} onPress={()=>{
-            this.props.navigation.navigate('HomeScreen');
-            firebase.auth().signOut();
-          }}>
-            <Text style={styles.logOutText}>Logout</Text>
+          <TouchableOpacity
+            style={styles.logOutButton}
+            onPress={() => {
+              this.props.navigation.navigate("HomeScreen");
+              firebase.auth().signOut();
+            }}
+          >
+            <Text style={[styles.logOutText,{marginTop: -20}]}>Logout</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -36,14 +93,22 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
     paddingBottom: 30,
   },
-  logOutButton : {
-    height:30,
-    width:'100%',
-    justifyContent:'center',
-    padding:10
+  logOutButton: {
+    height: 30,
+    width: "100%",
+    justifyContent: "center",
+    padding: 10,
   },
-  logOutText:{
+  logOutText: {
     fontSize: 30,
-    fontWeight:'bold'
-  }
+    fontWeight: "bold",
+  },
+  imageContainer: {
+    flex: 0.75,
+    width: "40%",
+    height: "20%",
+    marginLeft: 20,
+    marginTop: 30,
+    borderRadius: 40,
+  },
 });

@@ -23,6 +23,7 @@ export default class RequestBookScreen extends React.Component {
       isBookRequestActive: "",
       requestedBookName: "",
       requestedBookStatus: "",
+      requestId: "",
       docId: "",
     };
   }
@@ -38,8 +39,37 @@ export default class RequestBookScreen extends React.Component {
               requestedBookName: doc.data().BookName,
               requestedBookStatus: doc.data().book_Status,
               docId: doc.id,
+              requestId: doc.data().RequestId,
             });
           }
+        });
+      });
+  };
+
+  sendNotification = () => {
+    db.collection("Users")
+      .where("email", "==", this.state.userId)
+      .get()
+      .then((snapshot) => {
+        snapshot.forEach((doc) => {
+          var name = doc.data().name;
+
+          db.collection("Notifications")
+            .where("RequestId", "==", this.state.requestId)
+            .get()
+            .then((snapshot) => {
+              snapshot.forEach((doc) => {
+                var donorId = doc.data().DonorId;
+                var bookName = doc.data().BookName;
+
+                db.collection("Notifications").add({
+                  TargetedUserID: donorId,
+                  BookName: bookName,
+                  Message: name + " has recived the book: " + bookName,
+                  NotificationStatues: "unread",
+                });
+              });
+            });
         });
       });
   };
@@ -166,6 +196,7 @@ export default class RequestBookScreen extends React.Component {
             }}
             onPress={() => {
               this.updateBookRequestStatus();
+              this.sendNotification();
             }}
           >
             <Text>I Received the Book</Text>
