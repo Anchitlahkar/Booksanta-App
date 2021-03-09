@@ -1,4 +1,4 @@
 # User: trial@gmail.com, trial3@gmail.com
 # Password: password, password
 
-### month/date/year
+### Date Formate: month/date/year
