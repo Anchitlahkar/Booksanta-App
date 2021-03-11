@@ -12,6 +12,7 @@ import {
 import MyHeader from "../components/MyHeader";
 import db from "../config";
 import firebase from "firebase";
+import { BookSearch } from "react-native-google-books";
 
 export default class RequestBookScreen extends React.Component {
   constructor() {
@@ -150,6 +151,12 @@ export default class RequestBookScreen extends React.Component {
   componentDidMount() {
     this.getIsBookRequestActive();
     this.getBookRequest();
+
+    var books = BookSearch.searchbook(
+      this.state.bookName,
+      "AIzaSyDlg_P4___CK_wvIq5iWBW-VdZd20rAFwc"
+      );
+      console.log(books)
   }
 
   render() {

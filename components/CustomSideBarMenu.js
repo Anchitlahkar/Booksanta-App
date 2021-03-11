@@ -29,9 +29,58 @@ export default class CustomSideBarMenu extends React.Component {
       });
   };
 
+  fetchImage = (imageName) => {
+    var storageRef = firebase
+      .storage()
+      .ref()
+      .child("user_profiles/" + imageName);
+    storageRef
+      .getDownloadURL()
+      .then((url) => {
+        this.setState({
+          image: url,
+        });
+      })
+      .catch((error) => {
+        this.setState({
+          image: "#",
+        });
+      });
+  };
+
+  uploadImage = async (uri, imageName) => {
+    var response = await fetch(uri);
+    var blob = await response.blob();
+    var ref = firebase
+      .storage()
+      .ref()
+      .child("user_profiles/" + imageName);
+
+    return ref.put(blob).then((response) => {
+      this.fetchImage(imageName);
+    });
+  };
+
+  selectPicture = async () => {
+    const { cancelled, uri } = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+    if (!cancelled) {
+      this.setState({
+        image: uri,
+      });
+      this.uploadImage(uri, this.state.userId);
+    }
+  };
+
   componentDidMount() {
     this.getUserProfile();
+    this.fetchImage(this.state.userId)
   }
+
   render() {
     return (
       <View style={styles.container}>
@@ -56,7 +105,7 @@ export default class CustomSideBarMenu extends React.Component {
               fontSize: 20,
               paddingTop: 10,
               color: "white",
-              paddingLeft:25
+              paddingLeft: 25,
             }}
           >
             {this.state.name}
@@ -73,7 +122,7 @@ export default class CustomSideBarMenu extends React.Component {
               firebase.auth().signOut();
             }}
           >
-            <Text style={[styles.logOutText,{marginTop: -20}]}>Logout</Text>
+            <Text style={[styles.logOutText, { marginTop: -20 }]}>Logout</Text>
           </TouchableOpacity>
         </View>
       </View>
