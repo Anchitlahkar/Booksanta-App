@@ -64,11 +64,8 @@ export default class MyRecivedBookScreen extends React.Component {
   }
 }
 const styles = StyleSheet.create({
-  button: {
-    width: 100,
-    height: 30,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "green",
-  },
+
 });
+
+
+
